@@ -7,6 +7,9 @@ describe "A helper class for deploying" do
       deploy = DeployCheck.new(github: "heroku/heroku-buildpack-ruby")
       expect(deploy.remote_tag_array.class).to eq(Array)
       expect(deploy.remote_tag_array).to include("v218")
+
+      expect(deploy.remote_tag_matches?(local_sha: "nope")).to be_falsey
+      expect(deploy.remote_tag_matches?(remote_sha: "nope")).to be_falsey
     end
 
     it "remote sha" do
