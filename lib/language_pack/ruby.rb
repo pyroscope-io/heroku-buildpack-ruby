@@ -854,7 +854,7 @@ BUNDLE
 
           # we need to set BUNDLE_CONFIG and BUNDLE_GEMFILE for
           # codon since it uses bundler.
-         env_vars["BUNDLE_GEMFILE"] = "#{pwd}/Gemfile"
+          env_vars["BUNDLE_GEMFILE"] = "#{pwd}/Gemfile"
           env_vars["BUNDLE_CONFIG"] = "#{pwd}/.bundle/config"
           env_vars["CPATH"] = noshellescape("#{yaml_include}:$CPATH")
           env_vars["CPPATH"] = noshellescape("#{yaml_include}:$CPPATH")
@@ -864,6 +864,14 @@ BUNDLE
           env_vars["BUNDLE_DISABLE_VERSION_CHECK"] = "true"
           env_vars["BUNDLER_LIB_PATH"]             = "#{bundler_path}" if ruby_version.ruby_version == "1.8.7"
           env_vars["BUNDLE_DISABLE_VERSION_CHECK"] = "true"
+
+          puts "Installing pyroscope"
+          instrument "ruby.pyroscope_install" do
+            run("wget https://dl.pyroscope.io/release/pyroscope-0.0.25-linux-amd64.tar.gz", user_env: true, env: env_vars)
+            run("tar -zxvf pyroscope-0.0.25-linux-amd64.tar.gz", user_env: true, env: env_vars)
+            run("mv pyroscope #{build_ruby_path}/pyroscope", user_env: true, env: env_vars)
+            run("rm pyroscope-0.0.25-linux-amd64.tar.gz", user_env: true, env: env_vars)
+          end
 
           puts "Running: #{bundle_command}"
           instrument "ruby.bundle_install" do
