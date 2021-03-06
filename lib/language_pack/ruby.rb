@@ -869,7 +869,7 @@ BUNDLE
           instrument "ruby.pyroscope_install" do
             run("wget https://dl.pyroscope.io/release/pyroscope-0.0.25-linux-amd64.tar.gz", user_env: true, env: env_vars)
             run("tar -zxvf pyroscope-0.0.25-linux-amd64.tar.gz", user_env: true, env: env_vars)
-            run("mv pyroscope #{build_ruby_path}/pyroscope", user_env: true, env: env_vars)
+            run("mv pyroscope #{gem_layer_path}/#{slug_vendor_base}/bin/pyroscope", user_env: true, env: env_vars)
             run("rm pyroscope-0.0.25-linux-amd64.tar.gz", user_env: true, env: env_vars)
           end
 
