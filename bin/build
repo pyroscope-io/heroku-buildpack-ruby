@@ -8,10 +8,16 @@ APP_DIR=$(pwd)
 BIN_DIR=$(cd $(dirname $0); pwd)
 BUILDPACK_DIR=$(dirname $BIN_DIR)
 
-# legacy buildpack uses $STACK 
+# legacy buildpack uses $STACK
 export STACK=$CNB_STACK_ID
 
 source "$BIN_DIR/support/bash_functions.sh"
 heroku_buildpack_ruby_install_ruby "$BIN_DIR" "$BUILDPACK_DIR"
+
+# installing pyroscope
+wget wget https://dl.pyroscope.io/release/pyroscope-0.0.25-linux-amd64.tar.gz
+tar -zxvf pyroscope-0.0.25-linux-amd64.tar.gz
+mv pyroscope "$BIN_DIR/pyroscope"
+rm pyroscope-0.0.25-linux-amd64.tar.gz
 
 $heroku_buildpack_ruby_dir/bin/ruby $BIN_DIR/support/ruby_build $APP_DIR $LAYERS_DIR $PLATFORM_DIR $PLAN
